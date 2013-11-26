@@ -1,0 +1,123 @@
+<!Doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>js改变样式</title>
+	<meta name="description" name="" />
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			border: 0;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<!--
+		<input type="button" value="font-family" />
+		<input type="button" value="font-weight" />
+		<input type="button" value="font-style" />
+		-->
+		<input type="button" value="font-size" />
+		<!--
+		<input type="button" value="text-decoration" />
+		<input type="button" value="text-align" />
+		-->
+		<input type="button" value="text-indent" />
+		<!--
+		<input type="button" value="word-spacing" />
+		<input type="button" value="letter-spacing" />
+		-->
+		<input type="button" value="bacground-color" />
+		<!--
+		<input type="button" value="background-image" />
+		<input type="button" value="background-repeat" />
+		<input type="button" value="background-position" />
+		-->
+		<input type="button" value="margin" />
+		<input type="button" value="border-width" />
+		<input type="button" value="position" />
+		<input type="button" value="width" />
+		<input type="button" value="height" />
+		<br/><br/>
+		<p id="pone" class="pone">啊发发发sssssssssssssssssssssssssssssssssssssss打发速度发大水发大水发到付打算打发打发打发的说aaaaaaaaaaaaaaaaaaa法的发生反反复复反反复复反反zzzzzzzzz复复反反复复反反复复速度发啊啊啊sssssssssssssssssssssssssssss啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊ddddddddddddddddddddddddzzz啊啊啊啊啊啊啊啊啊啊啊啊zzzzzzzzzzzzzzzzzzzzzzzzzz啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</p>
+	</div>
+
+	<script type="text/javascript">
+		var pone = document.getElementById("pone");
+
+		    function po() {
+			pone.style.width = "600px";
+			pone.style.height = "150px";
+			pone.style.fontFamily = "sans-serif";
+			pone.style.fontWeight = "normal";
+			pone.style.fontStyle = "normal";
+			pone.style.fontSize = "14px";
+			pone.style.textDecoration = "none";
+			pone.style.textIndent = "0";
+			pone.style.textAlign = "left";
+			pone.style.wordSpacing = "0";
+			pone.style.letterSpacing = "0";
+			pone.style.margin = "0";
+			pone.style.padding = "0";
+			pone.style.backgroundColor = "#fff";
+			//pone.style.backgroundImage = "";
+			//pone.style.position = "";
+			pone.style.top = "0";
+			pone.style.left = "0";
+			pone.style.backgroundRepeat = "no-repeat";
+			pone.style.backgroundPosition = "0 0";
+			pone.style.border = "1px solid black"; 
+		};
+		window.onload = po();
+
+		var inps = document.getElementsByTagName("input");
+
+		for(var i = 0; i < inps.length; i++) {
+			inps[i].index = i + 1;
+			inps[i].onclick = function() {
+				switch(this.index) {
+					case 1:
+						po();
+						pone.style.fontSize = "20px";
+						break;
+					case 2:
+						po();
+						pone.style.textIndent = "2em";
+						break;
+					case 3:
+						po();
+						pone.style.backgroundColor = "#eee";
+						break;
+					case 4: 
+						po();
+						pone.style.margin = "200px 10px 10px 200px";  //合写的margin必须加单位
+						break;
+					case 5:
+						po();
+						pone.style.borderWidth = "5px";
+						break;
+					case 6: 
+						po();
+						pone.style.position = "relative";
+						pone.style.top = "50px";
+						pone.style.left = "50px";
+						break;
+					case 7:
+						po();
+						pone.style.width = "900px";
+						break;
+					case 8:
+						po();
+						pone.style.height = "300px";
+						break;
+					default: 
+						po();
+						break;
+				};
+			};
+		};
+	</script>
+</body>
+</html>

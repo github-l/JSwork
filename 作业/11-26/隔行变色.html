@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>JS练习</title>
+	<meta name="description" content="" />
+</head>
+<body>
+	<div id="one" class="one"></div>
+	<ul id="ulone">
+		<li>12312312312</li>
+		<li>斯蒂芬斯蒂芬都是</li>
+		<li>asdfasdf</li>
+		<li>阿斯顿发发呆</li>
+		<li>asdfasdfafa</li>
+		<li>阿斯顿发发生</li>
+		<li>234234234</li>
+		<li>倒萨发方大</li>
+	</ul>
+	<script type="text/javascript">
+		var divO = document.getElementById("one");
+		divO.style.width = "50px";
+		divO.style.height = "50px";
+		/*
+		*标签的宽高必须加单位
+		*/
+		divO.style.backgroundColor = "red";
+
+		divO.onclick = function() {
+			divO.className = "oneone";
+			alert(divO.className);
+		};
+
+		var ulO = document.getElementById("ulone");
+		ulO.style.listStyleType = "none";
+		ulO.style.width = "300px";
+		ulO.style.marginLeft = "100px";
+		ulO.style.paddingLeft = "100";
+		ulO.style.padding = "10px";
+		/*
+		*ulO.style.paddingLeft = "50";
+		*margin-left必须加单位
+		*padding-left值可以不加单位
+		*合写的margin、padding必须加单位
+		*/
+		ulO.style.border = "1px solid black";
+		ulO.style.borderWidth = "10px";
+		/*
+		*border的width必须加单位
+		*/
+		ulO.style.fontSize = "20px";
+		/*
+		*字体的font-size必须加单位。
+		*/
+		
+		ulO.style.position = "relative";
+		ulO.style.top = "10px";
+		ulO.style.left = "10px";
+		/*
+		*标签的定位的top、left必须加单位
+		*/
+
+		var lis = ulO.getElementsByTagName("li");
+		for(var i = 0; i < lis.length; i++) {
+			if((i + 1) % 2 != 0) {
+				lis[i].onmouseout = function(){
+					this.style.backgroundColor = "blue";
+				};
+				lis[i].style.backgroundColor = "blue";
+			}else {
+				lis[i].onmouseout = function() {
+					this.style.backgroundColor = "green";
+				};
+				lis[i].style.backgroundColor = "green";
+			};
+			lis[i].onmouseover = function() {
+				this.style.backgroundColor = "red";
+			};
+		};
+		
+	</script>
+</body>
+</html>

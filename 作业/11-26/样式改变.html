@@ -1,0 +1,43 @@
+<!Doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>js改变样式</title>
+	<meta name="description" name="" />
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			border: 0;
+		}
+		div,p,span {
+			border: 1px solid black;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<input id="inpo" type="button" value="样式改变" /><br/>
+		<div id="div1"><span>速度法师打发打发</span></div><br/>
+		<p id="p1">阿斯顿发放大沙发沙发发adsfadfasfasfaffdafadfa的说法是发放啊</p><br/>
+		<div id="div2"><a href="#">asdfadfafddadfafadfdasdfasdfa阿杜的发发发到</a></div><br/>
+		<span id="sp1">这是一个span标签，并给它display:block;及设置宽度</span><br/>
+	</div>
+
+	<script type="text/javascript">
+		var inpo = document.getElementById("inpo");
+		var div1 = document.getElementById("div1");
+		var p1 = document.getElementById("p1");
+		var div2 = document.getElementById("div2");
+		var	sp1 = document.getElementById("sp1");
+
+		inpo.onclick = function() {
+			div1.style.color = "red";
+			p1.style.border = "1px solid blue";
+			div2.style.backgroundColor = "#eee";
+			sp1.style.display = "block";
+			sp1.style.height = "100px";
+		};
+	</script>
+</body>
+</html>

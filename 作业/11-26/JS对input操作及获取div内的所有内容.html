@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>JS对input操作及获取div内的所有内容</title>
+	<meta name="description" content="" />
+</head>
+<body>
+	<input type="button" value="获取input的value" />
+	<input type="button" value="改变input的value" />
+	<input type="button" value="获取div内的所有内容" />
+	<div id="con">
+		<span>这是div内的所有内容</span>
+		<p>这是div内的所有内容这是div内的所有内容这是div内的所有内容这是div内的所有内容这是div内的所有内容</p>
+		<a href="#">这是div内的所有内容</a>
+	</div>
+	<script type="text/javascript">
+		var inpos= document.getElementsByTagName("input");
+		inpos[0].onclick = function() {
+			alert(inpos[0].value);
+		};
+		inpos[1].onclick = function() {
+			inpos[1].value = "123";
+		};
+		
+		var con = document.getElementById("con");
+		con.style.border = "1px solid black";
+
+		inpos[2].onclick = function() {
+			alert(con.innerHTML);
+		};
+	</script>
+</body>
+</html>
