@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Document</title>
+	<meta name="description" content="" />
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			border: 0;
+		}
+		p {
+			width: 300px;
+			height: 200px;
+			margin: 10px;
+			border: 1px solid black;
+		}
+		input {
+			width: 100px;
+			height: 20px;
+			border: 1px solid black;
+			margin: 10px;
+		}
+	</style>	
+</head>
+<body>
+		
+	<input type="text" value="" />
+	<input type="button" value="width" />
+	<input type="button" value="height" />
+	<input type="button" value="color" />
+	<input type="button" value="fontSize" />
+	<input type="button" value="backgroundColor" />
+	<p id="onep">通过输入框改变p标签的样式width: 300px;	height: 200px;</p>
+
+	<script type="text/javascript">
+		var inps = document.getElementsByTagName("input");
+		var onep = document.getElementById("onep");
+			for(var i = 1; i < inps.length; i++) { 
+			inps[i].onclick = function() {
+				changP(onep, this.value, inps[0].value);
+			}; 
+		};
+		function changP(ele, prop, val) {
+			ele.style[prop] = val;
+		};
+		
+		/*
+		inps[1].onclick = function() {
+			onep.style.width = inps[0].value;
+		};
+		inps[2].onclick = function() {
+			onep.style.height = inps[0].value;
+		};
+		inps[3].onclick = function() {
+			onep.style.color = inps[0].value;
+		};
+		inps[4].onclick = function() {
+			onep.style.fontSize = inps[0].value;
+		};
+		inps[5].onclick = function() {
+			onep.style.backgroundColor = inps[0].value;
+		};
+		*/
+	</script>
+</body>
+</html>

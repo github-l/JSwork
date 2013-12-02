@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>tab切换 封装 js</title>
+	<meta charset="description" content="" />
+	<style type="text/css">
+		.cf:before,
+		.cf:after {
+			content: " ";  
+			display: table;  
+		}
+		.cf:after {
+			clear: both;
+		}
+		.cf {
+			
+			*zoom: 1;
+		}
+		* {
+			margin: 0;
+			padding: 0;
+			border: none;
+			font-size: 16px;
+		}
+		ul {
+			list-style-type: none;  
+			/*不加这个，就导致在定位的时候li里的标签向下移动，这是由于ul本身存在的“圆点”的高度造成的。*/
+		}
+		a {
+			font-size: 16px;
+		}
+		.one li {
+			width: 50px;
+			height: 20px;
+			border: 1px solid black;
+			float: left;
+		}
+		.one p {
+			display: none;
+		}
+		.tab-nav .active {
+			background-color: red;
+		}
+		.tab-con .active {
+			display: block;
+		}
+		/* *** */
+		.two-tab {
+			width: 200px;
+			height: 300px;
+			text-align: center;
+			border: 1px solid blue;
+			position: relative; 
+		}
+		.two-tab li {
+			height: 20px;
+			margin-top: 5px;
+		}
+		.two-tab h3 {	
+			width: 190px;
+			height: 20px;
+			background-color: #eee;
+		}
+		.two-tab .active h3 {
+			border: 1px solid red;
+			border-right: none;
+			background-color: #fff;
+			position: absolute; 
+			left: 1px;
+			z-index: 5; 
+		}
+		.two div {
+			width: 300px;
+			border: 1px solid red;
+			background-color: #fff;
+			position: absolute; 
+			top: 5px;
+			left: 191px;
+			display: none;
+		} 
+		.two .show {
+			display: block;
+		}
+		.two dl,.two dt,.two dd {
+			float: left;
+			margin: 5px;
+		} 
+		.two dl {
+			width: 100%;
+		}
+		/******/
+		.thr-tab { 
+			text-align: center;
+		}
+		.thr-tab li {
+			height: 21px;
+			float: left;
+			position: relative;
+		} 
+		.thr-tab span {
+			padding: 0 5px;
+			height: 20px;
+			border: 1px solid red;
+			background-color: #eee; 
+		}
+		.thr-tab .active span {
+			border-bottom: none;
+			background-color: #fff;
+		}
+		.thr-tab div {
+			width: 120px;
+			text-align: left;
+			border: 1px solid red;
+			background-color: #eee;
+			position: absolute;
+			top: 16px;
+			left: 0;
+			z-index: -1;
+			display: none;
+		}
+		.thr-tab div a {	
+			width: 100%;
+			padding-left: 5px;
+			float: left;
+		}
+		.thr-tab .show {
+			display: block; 
+		}
+	</style>
+</head>
+<body>
+	<!-- 普通tab切换 不隐藏-->
+	<div class="one cf">
+		<ul id="tab-nav" class="tab-nav cf">
+			<li class="active">1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+		</ul>
+		<div id="tab-con" class="tab-con">
+			<p class="active">1</p>
+			<p>2</p>
+			<p>3</p>
+			<p>4</p>
+		</div>
+	</div>
+	<!-- 京东 左右-->
+	<div id="two" class="two cf">
+		<ul id="two-tab" class="two-tab">
+			<li>
+				<h3>
+					<a href="#">图书</a>
+					<a href="#">音响</a>
+					<a href="#">数字商品</a>
+				</h3>
+				<div>
+					<dl>
+						<dt>电子书</dt>
+						<dd><span>|</span>免费</dd>
+						<dd><span>|</span>小说</dd>
+						<dd><span>|</span>文学</dd>
+					</dl>
+					<dl>
+						<dt>电子书</dt>					
+						<dd><span>|</span>免费</dd>
+						<dd><span>|</span>小说</dd>
+						<dd><span>|</span>文学</dd>
+					</dl>
+				</div>
+			</li> 
+			<li>
+				<h3>
+					<a href="#">图书</a>
+					<a href="#">音响</a>
+					<a href="#">数字商品</a>
+				</h3>
+				<div>
+					<dl>
+						<dt>电子书</dt>
+						<dd><span>|</span>免费</dd>
+						<dd><span>|</span>小说</dd>
+						<dd><span>|</span>文学</dd>
+					</dl>
+					<dl>
+						<dt>电子书</dt>					
+						<dd><span>|</span>免费</dd>
+						<dd><span>|</span>小说</dd>
+						<dd><span>|</span>文学</dd>
+					</dl>
+				</div>
+			</li> 
+		</ul>
+	</div>
+	<!--新浪--> 
+	<div id="thr" class="thr cf">
+		<ul id="thr-tab" class="thr-tab">
+			<li>
+				<span>微博</span>
+				<div>
+					<a href="#">私AS 信</a>
+					<a href="#"> 评论</a>
+				</div>
+			</li>
+			<li>
+				<span>微博1231123</span>
+				<div>
+					<a href="#">私信 </a>
+					<a href="#">评论 </a>
+				</div>
+			</li>
+		</ul>
+	</div> 
+	<script type="text/javascript">
+		function tabone(navid, conid) {
+			var tabnav = document.getElementById(navid).getElementsByTagName("li");
+			var tabcon = document.getElementById(conid).getElementsByTagName("p");
+			
+			for(var i = 0; i < tabnav.length; i++) {
+				tabnav[i].onmouseover = function() {
+					for(var i = 0; i < tabnav.length; i++) {
+						tabnav[i].className = (this == tabnav[i]) ? "active" : "";
+						tabcon[i].className = (this == tabnav[i]) ? "active" : "";
+					};
+				};	
+			};
+		};	
+		tabone("tab-nav", "tab-con");
+
+		function twoandthr(navid) {
+			var tabnav = document.getElementById(navid).getElementsByTagName("li");
+			
+			for(var i = 0; i < tabnav.length; i++) { 
+				tabnav[i].onmouseover = function() {
+					this.className = "active";
+					this.getElementsByTagName("div")[0].className = "show";
+				};	
+				tabnav[i].onmouseout = function() {
+					this.className = "";
+					this.getElementsByTagName("div")[0].className = "";
+				};	
+			};
+		};	
+		twoandthr("two-tab");
+		twoandthr("thr-tab");		
+	</script>
+</body>
+</html>
