@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>计时器 秒表 js</title>
+	<meta name="description" content="" />
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			border: 0;
+		} 
+		.btn {
+			text-align: center;
+			width: 100px;
+			height: 100px;
+			margin: 0 auto;
+		}
+		.btn .txttime {
+			width: 100%;
+			height: 20px;
+			border: 1px solid blue;
+		} 
+	</style>
+</head>
+<body> 
+	<div id="btn" class="btn">
+		<input type="button" value="start" />
+		<input type="button" value="end" />
+		<p id="txttime" class="txttime">00:00:00</p>
+	</div>
+	<script type="text/javascript"> 
+		var btn = document.getElementById("btn");
+		var txttime = document.getElementById("txttime");
+		var btns = btn.getElementsByTagName("input");  
+
+		var timer = null;
+		var hour = min = sec = 0;  
+		// 计时器 累加函数
+		function gettime() {
+			sec++;
+			if(sec == 60) {
+				sec = 0;
+				min += 1;
+				if(min == 60) {
+					min = 0;
+					hour += 1;
+					if(hour == 24) {
+						hour = 0;
+					};
+				};
+			};  
+			txttime.innerText = ((hour < 10) ? ("0" + hour) : hour) + ":" + 
+									(min1 = (min < 10) ? ("0" + min) : min) + ":" + 
+										(sec1 = (sec < 10) ? ("0" + sec) : sec);
+		};
+		timer = setInterval(gettime, 1000);
+		// 点击start end 事件
+		for(var i = 0; i < btns.length; i++) {
+			btns[i].index = i;
+			btns[i].onclick = function() {
+				if(timer) {
+					clearInterval(timer);
+				};
+				if(this.index == 0) {
+					txttime.innerText = "00:00:00";
+					hour = min = sec = 0;
+					timer = setInterval(gettime, 1000);
+				};
+			};
+		};
+	</script>
+</body>
+</html>

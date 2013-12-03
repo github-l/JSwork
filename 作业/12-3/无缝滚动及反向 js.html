@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>无缝滚动及反向 js</title>
+	<meta name="description" content="" />
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			border: 0;
+		}
+		.out {
+			width: 666px;
+			height: 224px;
+			overflow: hidden;
+		}
+		.imgs {
+			width: 1332px;
+			height: 224px;
+		}
+		.imgs img {
+			width: 222px;
+			height: 224px;
+			float: left;
+		}
+	</style>
+</head>
+<body>
+	<div id="out" class="out cf">
+		<div id="imgs" class="imgs">
+			<img src="images/pic1.jpg" alt="pic1" title="pic1" />
+			<img src="images/pic2.jpg" alt="pic2" title="pic2" />
+			<img src="images/pic3.jpg" alt="pic3" title="pic3" />
+		</div>
+	</div>
+	<div id="btn" class="btn">
+		<input type="button" value="<<" />
+		<input type="button" value=">>" />
+	</div>
+	<script type="text/javascript">
+		var out = document.getElementById("out");
+		var imgs = document.getElementById("imgs");
+		var btns = document.getElementById("btn").getElementsByTagName("input");
+		imgs.innerHTML += imgs.innerHTML;
+		
+		var timer = null;
+		var speed = 1;
+		var x = 0;
+		// 循环滚动函数
+		function move() {
+			x += speed;
+			if((x >= imgs.offsetWidth / 2 && speed > 0) || (x <= 0 && speed < 0)) {
+				x = x - (speed / Math.abs(speed)) * imgs.offsetWidth / 2;
+			};
+			out.scrollLeft = x; 
+		};
+		timer = setInterval(move,17); 
+		// 清除定时器timer
+		function clearTimer() {
+			if(timer) {
+					clearInterval(timer);
+			};
+		};
+		// input点击事件
+		for(var i = 0; i < btns.length; i++) {
+			btns[i].index = i;
+			btns[i].onclick = function() {
+				clearTimer();
+				speed = (this.index == 0) ? (speed < 0 ? -speed : speed) : (speed > 0 ? -speed : speed);
+				timer =	setInterval(move,17);
+			};
+		};
+		out.onmouseover = function() {
+			clearTimer();
+		};
+		out.onmouseout = function() {
+			clearTimer();
+			timer =	setInterval(move,17);
+		};
+	</script>
+</body>
+</html>

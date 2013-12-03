@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>无缝滚动js table实现</title>
+	<meta name="description" content="" />
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			border: 0;
+		} 
+		img {
+			vertical-align: top;
+		}
+		.out {
+			width: 666px;
+			height: 224px;
+			overflow: hidden;  
+		}
+		.imgs {
+			width: 1332px;
+			height: 224px;
+			border-collapse: collapse;  
+		}
+		.imgs td {
+			width: 222px;
+			height: 224px;  
+			overflow: hidden;
+		}
+		.imgs img {
+			width: 222px;
+			height: 224px; 
+		}
+	</style>
+</head>
+<body>
+	<div id="out" class="out cf">
+		<table id="imgs" class="imgs">
+			<tr>
+				<td><img src="images/pic1.jpg" alt="pic1" title="pic1" /></td>
+				<td><img src="images/pic2.jpg" alt="pic2" title="pic2" /></td>
+				<td><img src="images/pic3.jpg" alt="pic3" title="pic3" /></td>
+			</tr>
+		</table>
+	</div> 
+	<div id="btn" class="btn">
+		<input type="button" value="<<" />
+		<input type="button" value=">>" />
+	</div>
+	<script type="text/javascript">
+		var out = document.getElementById("out");
+		var imgs = document.getElementById("imgs");
+		var btns = document.getElementById("btn").getElementsByTagName("input");
+		var trs = imgs.getElementsByTagName("tr"); 
+		var tds = trs[0].getElementsByTagName("td");
+		var tdnum = tds.length;   // 获得默认的单元格的个数
+		// 这种在ie下会报错；原因：在ie下，一些标签的innerHTML只能获取不能设置。如：tr就只能获取，而td就可设置；
+		// 所以通过动态添加单元格 来实现。
+		//trs[0].innerHTML += trs[0].innerHTML;  
+
+		// 添加单元格(列)
+		for(var i = 0; i < tdnum; i++) {
+			var newtd1 = trs[0].insertCell(i + tdnum);
+			newtd1.innerHTML = tds[i].innerHTML; 
+		};		
+
+		var timer = null;
+		var speed = 1;
+		var x = 0;
+		// 循环滚动函数
+		function move() {
+			x += speed;
+			if((x >= imgs.offsetWidth / 2 && speed > 0) || (x <= 0 && speed < 0)) {
+				x = x - (speed / Math.abs(speed)) * imgs.offsetWidth / 2;
+			};
+			out.scrollLeft = x; 
+		};
+		timer = setInterval(move,17); 
+		// 清除定时器timer
+		function clearTimer() {
+			if(timer) {
+				clearInterval(timer);
+			};
+		};
+		// input点击事件
+		for(var i = 0; i < btns.length; i++) {
+			btns[i].index = i;
+			btns[i].onclick = function() {
+				clearTimer();
+				speed = (this.index == 0) ? (speed < 0 ? -speed : speed) : (speed > 0 ? -speed : speed);
+				timer =	setInterval(move,17);
+			};
+		}; 
+		out.onmouseover = function() {
+			clearTimer();
+		};
+		out.onmouseout = function() {
+			clearTimer();
+			timer =	setInterval(move,17);
+		};
+	</script>
+</body>
+</html>
