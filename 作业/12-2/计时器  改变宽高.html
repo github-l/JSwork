@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8"> 
+	<title>setTimeout/setInterval js改变宽高</title>
+	<style type="text/css">
+		div {
+			width: 5px;
+			height: 5px;
+			background-color: red;
+		}
+	</style>
+</head>
+<body> 
+	<div id="one"></div>
+	<script type="text/javascript"> 
+		var one = document.getElementById("one");
+		
+		var w = 5;
+		var h = 5;
+		setTimeout(change, 1000);
+		function change() {
+			if(w >= 500) {
+				return;
+			};	
+			w += w;
+			h += h;
+			one.style.width =w + "px";
+			one.style.height = h + "px";
+			setTimeout(change,1000);	
+		}
+		
+	</script>
+</body>
+</html>

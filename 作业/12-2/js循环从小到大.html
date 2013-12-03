@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8"> 
+	<title>setTimeout/setInterval js循环从小到大</title>
+	<style type="text/css">
+		* {
+			text-align: center;
+		}
+		div {
+			width: 20px;
+			height: 20px;
+			background-color: red;
+			margin: 0 auto;
+		}
+	</style>
+</head>
+<body>
+	<input id="btn" type="button" value="循环从小到大" />
+	<div id="one"></div>
+	<script type="text/javascript">
+		var btn = document.getElementById("btn");
+		var one = document.getElementById("one");
+		
+		var w = one.offsetWidth;
+		var h = one.offsetHeight;
+		var num = 3;
+		//setTimeout(change, 1000);
+		function change() {
+			if((w >= 200 && num > 0) || (w <= 20 && num < 0)) { 
+				num = -num;
+			};	 
+			w += num;
+			h += num;
+			one.style.width = w + "px";
+			one.style.height = h + "px";
+			btnclick();
+		}
+		function btnclick() {
+			setTimeout(change, 15);
+		};
+		btn.onclick = btnclick;
+	</script>
+</body>
+</html>

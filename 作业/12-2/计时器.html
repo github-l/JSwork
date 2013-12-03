@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8"> 
+	<title>Document</title>
+	<style>
+		div {
+			width: 100px;
+			height: 100px;
+			background: red;
+			position: relative;
+		}
+	</style>
+</head>
+<body>
+	<div id="one"></div>
+	
+	<script type="text/javascript">
+		/*
+		setTimeout(function() {		// 这里解析script时，相当于 先定义一个定时器(而没有执行里面的东西。)
+			alert(3);	
+		}, 1000);
+		alert(1);   // 这里先弹出 “1”，再弹出”3“。
+
+		setInterval(function() {
+			alert(3);
+		}, 1000);
+		alert(1);  
+		*/
+
+		/*
+		//一秒弹出一次，这个效果用下面的for循环不能实现。
+		// 因为解析script时就执行了for循环，而这时相当于for循环在不停的定义计时器，但没有执行里面的aa函数。
+		for( ; ; ) {
+			setTimeout(aa);  // 
+		};
+		function aa() {
+			alert(1);
+		}; 
+ 
+		var i = 0;
+		setTimeout(test,1000);
+		function test() {
+			i++;
+			alert(i);
+			setTimeout(test,1000);
+		};
+		//test(); 
+		*/
+
+		// 这里 定义top变量名，会报错（弹出object window），即top在浏览器中已经声明过了。
+		// 所以为了防止重复声明，在声明变量时，最好加上前、后缀。
+		//var top = 100;   
+		var y = 0; 
+		var x = 0;
+		var one = document.getElementById("one"); 
+		setTimeout(test,15);
+		function test() { 
+			y++;
+			x++;
+			one.style.left = x + "px";
+			one.style.top = y + "px";
+			setTimeout(test,15);
+		};  
+	</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8"> 
+	<title>setTimeout/setInterval js点击放大</title>
+	<style type="text/css">
+		div {
+			width: 5px;
+			height: 5px;
+			background-color: red;
+		}
+	</style>
+</head>
+<body>
+	<input id="btn" type="button" value="点击放大" />
+	<div id="one"></div>
+	<script type="text/javascript">
+		var btn = document.getElementById("btn");
+		var one = document.getElementById("one");
+		
+		var w = one.offsetWidth;
+		var h = one.offsetHeight;
+		//setTimeout(change, 1000);
+		function change() {
+			if(w >= 500) {
+				alert("已经为最大");
+				return;
+			};	
+			w += w;
+			h += h;
+			one.style.width =w + "px";
+			one.style.height = h + "px";
+			btnclick();
+		}
+		function btnclick() {
+			setTimeout(change, 1000);
+		};
+		btn.onclick = btnclick;
+	</script>
+</body>
+</html>
