@@ -1,0 +1,213 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>无缝滚动及反向 js</title>
+	<meta name="description" content="" />
+	<style type="text/css"> 
+		* {
+			margin: 0;
+			padding: 0;
+			border: 0;
+		}  
+		.out {
+			width: 200px;
+			height: 20px;
+			text-align: left;
+			margin: 0 auto;
+		}
+		.out input {
+			margin: 0 10px; 
+		}
+		.con {
+			width: 200px;
+			height: 40px;
+			text-align: center;
+			margin: 50px auto;
+			overflow: hidden;
+		}
+		.con div {
+			width: 40px;
+			height: 40px;
+			margin-right: 5px;
+			float: left; 
+			overflow: hidden;
+		}
+		.con div p {
+			width: 40px;
+			height: 80px; 
+			float: left;
+		}
+		.con div strong {
+			width: 40px;
+			height: 40px;
+			float: left; 
+		}
+	</style>
+</head>
+<body>
+	<div id="out" class="out cf">
+		<input type="button" value="start" />
+		<input type="button" value="stop" />
+		<input type="button" value="pause" />
+	</div>
+	<div id="con" class="con">
+		<div>
+			<p>
+				<strong>00</strong>
+				<strong>01</strong>
+			</p>
+		</div>
+		<div>
+			<p>
+				<strong>00</strong>
+				<strong>01</strong>
+			</p>
+		</div>
+		<div>
+			<p>
+				<strong>00</strong>
+				<strong>01</strong>
+			</p>
+		</div>
+	</div> 
+	<script type="text/javascript"> 
+		var out = document.getElementById("out");
+		var con = document.getElementById("con");  
+		var btns = out.getElementsByTagName("input");
+		var conds = con.getElementsByTagName("div"); 
+		// 秒表 两层的样式(背景色) 
+		for(var i = 0; i < conds.length; i++) { 
+			conds[i].getElementsByTagName("strong")[0].style.backgroundColor = "gray"; 
+		};
+		// 定义变量
+		var timer = null;
+		var timerSec = null;
+		var timerMin = null;
+		var timerHour = null;
+		var hour = min = sec = 0;  
+		// 秒表函数
+		function gettime() { 
+			sec++;   
+			clearTimer();
+			if(sec == 60) {
+				sec = 0;
+				min += 1;
+				if(min == 60) {
+					min = 0;
+					hour += 1;
+					if(hour == 24) {
+						hour = 0;
+					};
+					timerHour = setInterval(function(){move(0, hour)}, 0);
+				};
+				timerMin = setInterval(function(){move(1, min)}, 0);
+			}; 
+			timerSec = setInterval(function(){move(2, sec)}, 0);
+			
+			timer = setTimeout(gettime, 1000); 
+		};  
+		// 秒表数字变化时 每次滚动大小
+		var speed = 7;
+		// 滚动位置
+		var topx0 = topx1 = topx2 = 0;
+		// 向上滚动函数
+		function move(t, num) { 
+			// 判断是否大于10
+			var num1 = num - 1;
+			if(num1 < 10) {
+				if(num1 == -1) {
+					num1 = 0;
+				};
+				num1 = "0" + num1;
+			};
+			if(num < 10) {
+				num = "0" + num;
+			};	
+			conds[t].getElementsByTagName("strong")[0].innerHTML = num1;
+			conds[t].getElementsByTagName("strong")[1].innerHTML = num;
+			conds[t].getElementsByTagName("strong")[1].style.backgroundColor = "red";
+			switch(t) {
+				case 0: 
+					topx0 += speed;
+					if(topx0 > 40) {
+						conds[0].scrollTop = 40;
+						clearInterval(timerHour);  
+						conds[0].getElementsByTagName("strong")[1].style.backgroundColor = "gray";
+						topx0 = 0; 
+						return;
+					};	
+					conds[0].scrollTop = topx0;
+					break;
+				case 1: 
+					topx1 += speed;
+					if(topx1 > 40) {  
+						conds[1].scrollTop = 40;
+						clearInterval(timerMin); 
+						conds[1].getElementsByTagName("strong")[1].style.backgroundColor = "gray";
+						topx1 = 0; 
+						return;
+					};	
+					conds[1].scrollTop = topx1;
+					break;
+				case 2: 
+					topx2 += speed;
+					if(topx2 > 40) {  
+						conds[2].scrollTop = 40;
+						clearInterval(timerSec);
+						conds[2].getElementsByTagName("strong")[1].style.backgroundColor = "gray";
+						topx2 = 0; 
+						return;
+					};	
+					conds[2].scrollTop = topx2;	
+					break;
+			}; 
+		};
+		timer = setTimeout(gettime, 1000); 
+		// 清除所用计时器
+		function clearTimer() {
+			if(timer) { 
+				clearTimeout(timer);
+			};
+			if(timerHour) {
+				clearInterval(timerHour);
+			};
+			if(timerMin) {
+				clearInterval(timerMin);
+			};
+			if(timerSec) {
+				clearInterval(timerSec);
+			};
+		};
+		// 判断点击的那个按钮“stop”，“pause”
+		var clickbtn = null;
+		btns[0].onclick = function() {
+			if(clickbtn == "stop") {  
+				timer = setTimeout(gettime, 1000);
+			};
+			if(clickbtn == "pause") {  
+				gettime(); 
+			};	
+			clickbtn = null;
+		};
+		btns[1].onclick = function() {
+			clearTimer();
+			clickbtn = "stop";
+			hour = min = sec = 0;  
+			topx = 0; 
+			conds[0].scrollTop = 0; 
+			conds[1].scrollTop = 0; 
+			conds[2].scrollTop = 0; 
+			conds[0].getElementsByTagName("strong")[0].innerHTML = "00";
+			conds[1].getElementsByTagName("strong")[0].innerHTML = "00";
+			conds[2].getElementsByTagName("strong")[0].innerHTML = "00";	
+		};
+		btns[2].onclick = function() {
+			clearTimer();
+			if(clickbtn == null) {
+				clickbtn = "pause";
+			}; 
+		};
+	</script>
+</body>
+</html>

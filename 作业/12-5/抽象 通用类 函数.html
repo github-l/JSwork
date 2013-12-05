@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8"> 
+	<title>抽象 通用类 函数</title>
+	<style>
+		.one {
+			width: 50px;
+			height: 55px;
+			background-color: red;
+			margin-left: 2px;
+		}
+	</style>
+</head>
+<body>
+	<div id="one" class="one"></div>
+	<script>
+		var one = document.getElementById("one");
+	
+		function moveTo(dom, prop, start, end, duration) { 
+			var speed = (end - start) / duration;
+			var x = start;
+			
+			var timer = setInterval(function() {
+				x += speed;
+				if((speed > 0 && x >= end) || (speed < 0 && x <= end)) {
+					x = end;
+					clearInterval(timer);
+				};
+				dom.style[prop] = x + "px";
+			}, 25);
+		};
+		moveTo(one, "marginLeft", 0, 400, 110);
+		moveTo(one, "marginTop", 0, 400, 110);
+		moveTo(one, "width", 0, 100, 110);
+	</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>无缝滚动及反向 js</title>
+	<meta name="description" content="" />
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			border: 0;
+		}
+		.out {
+			width: 834px;
+			height: 350px;
+			overflow: hidden;
+		}
+		.imgs {
+			width: 1668px;
+			height: 350px;
+		}
+		.imgs img {
+			width: 278px;
+			height: 350px;
+			overflow: hidden;
+			float: left;
+		}
+	</style>
+</head>
+<body>
+	<div id="out" class="out cf">
+		<div id="imgs" class="imgs">
+			<img src="images/1.jpg" alt="pic1" title="pic1" />
+			<img src="images/2.jpg" alt="pic2" title="pic2" />
+			<img src="images/3.jpg" alt="pic3" title="pic3" />
+		</div>
+	</div>
+	<div id="btn" class="btn">
+		<input type="button" value="<<" />
+		<input type="button" value=">>" />
+	</div>
+	<script type="text/javascript">
+		// 获取变量
+		var out = document.getElementById("out");
+		var imgs = document.getElementById("imgs");
+		var btns = document.getElementById("btn").getElementsByTagName("input");
+		imgs.innerHTML += imgs.innerHTML;
+		// 一张图片的宽度
+		var imgwidth = imgs.getElementsByTagName("img")[0].offsetWidth; 
+		var timer = null; 
+		var timer1 = null;
+		var speed = 1;   // 双向变量（即代表大小，又代表方向）
+		var x = 0;
+		// 循环滚动函数
+		function move() {
+			x += speed; 
+			if((x >= imgs.offsetWidth / 2 && speed > 0) || (x <= 0 && speed < 0)) {
+				x = x - (speed / Math.abs(speed)) * imgs.offsetWidth / 2;
+			};
+			out.scrollLeft = x;
+			if(x % imgwidth == 0) { 
+				clearTimer(); 
+				timer1 = setTimeout(move, 2000); 
+				//return;
+			}else {
+				clearTimer();
+				timer = setTimeout(move, 17);
+			};			
+		};
+		timer = setTimeout(move, 17); 
+		// 清除定时器timer
+		function clearTimer() {
+			if(timer) {
+				clearTimeout(timer); 
+			}; 
+			if(timer1) {
+				clearTimeout(timer1); 
+			};
+		};
+		// input点击事件
+		for(var i = 0; i < btns.length; i++) {
+			btns[i].index = i;
+			btns[i].onclick = function() {
+				clearTimer();
+				speed = (this.index == 1) ? (speed < 0 ? -speed : speed) : (speed > 0 ? -speed : speed);
+				move();
+			};
+		};
+		out.onmouseover = function() {
+			clearTimer();
+		};
+		out.onmouseout = function() {
+			move();
+		};
+	</script>
+</body>
+</html>
