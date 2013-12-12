@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" /> 
+	<title>大图滚</title>
+	<meta name="description" content="" />
+	<style>
+		.out {
+			width: 520px;
+			height: 280px;
+			margin: 0 auto;
+			overflow: hidden;
+			position: relative;
+		}
+		.slide {
+			width: 520px;
+			height: 280px;
+			overflow: hidden;
+		}
+		.pic {
+			width: 3120px;
+			height: 280px;
+		}
+		.pic img {
+			width: 520px;
+			height: 280px;
+			float: left; 
+		}
+		.leftBtn,.rightBtn {
+			width: 30px;
+			height: 280px;
+			text-align: center;
+			line-height: 280px;
+			font-size: 30px;
+			font-weight: bold;
+			color: #fff;
+			background-color: black;
+			opacity: 0.3;
+			filter:alpha(opacity=30);
+			position: absolute;
+			top: 0;
+			display: none;
+		}
+		.leftBtn {
+			left: 0;
+		}
+		.rightBtn {
+			right: 0;
+		}
+		.pnum {
+			position: absolute; 
+			left: 65%;
+			top: 90%;
+		}
+		.pnum span { 
+			width: 9px;
+			height: 9px; 
+			margin: 0 5px;
+			float: left;
+			cursor: pointer;
+			overflow: hidden;
+			background: url(images/point.jpg) 0 0 no-repeat; 
+		}
+		.pnum span.active {
+			background: url(images/pointshow.jpg) 0 0 no-repeat;
+		}
+	</style>
+</head>
+<body>
+	<div id="out" class="out">
+		<div id="leftBtn" class="leftBtn"><span>&lt;<span></div>
+		<div id="rightBtn" class="rightBtn"><span>&gt;</span></div>
+		<div id="pnum" class="pnum">
+			<span class="active">&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span>
+		</div>
+		<div id="slide" class="slide">
+			<div id="pic" class="pic">
+				<img src="images/11.jpg" alt="pic1" title="pic1" />
+				<img src="images/12.jpg" alt="pic2" title="pic2" />
+				<img src="images/13.jpg" alt="pic3" title="pic3" />
+				<img src="images/14.jpg" alt="pic4" title="pic4" />
+				<img src="images/15.jpg" alt="pic5" title="pic5" /> 
+				<img src="images/16.jpg" alt="pic6" title="pic6" /> 
+			</div>
+		</div>
+	</div>
+	<script>
+		// 获取标签变量
+		var out = document.getElementById("out");
+		var leftBtn = document.getElementById("leftBtn");
+		var rightBtn = document.getElementById("rightBtn");
+		var pnum = document.getElementById("pnum");
+		var pnums = pnum.getElementsByTagName("span");
+		var slide = document.getElementById("slide");
+		var pic = document.getElementById("pic");
+		var imgs = pic.getElementsByTagName("img");
+		// 声明变量
+		var index = 0;
+
+		// 鼠标进入图区的事件 （有最外层 和 图层之分）
+		out.onmouseover = function() {
+			leftBtn.style.display = "block";
+			rightBtn.style.display = "block";
+		};
+		out.onmouseout = function() {
+			leftBtn.style.display = "";
+			rightBtn.style.display = "";
+		}; 
+		slide.onmouseover = function() {
+			clearTimer();
+		};
+		slide.onmouseout = function() {
+			timer = setInterval(function() { moveDire("right"); }, 2000); 
+		};
+
+		// getStyle 获取样式
+		function getStyle(tag, prop) {
+			var value;
+			if(prop in document.body.style) {
+				if(window.getComputedStyle) {
+					value = document.defaultView.getComputedStyle(tag, null)[prop];
+				}else {
+					value = window.currentStyle[prop];
+				};
+			}else {
+				value = tag[prop];
+			};
+			value = parseFloat(value);
+			value = (isNaN(value)) ? 0 : value; 
+			return value;
+		};
+
+		//moveTo滚动函数
+		function moveTo(dom, prop, step, end) {
+			var start = getStyle(dom, prop);
+			var speed = (end - start) / step;
+			var x = start;
+			
+			var tprop = "_t_" + prop;
+			if(dom[tprop]) {
+				clearInterval(dom[tprop]);
+			}; 
+			for(var i = 0; i < imgs.length; i++) { 
+				pnums[i].className = (i == index) ? "active" : "";
+			};
+			dom[tprop] = setInterval(function() {
+				x += speed;
+				if((x >= end && speed > 0) || (x <= end && speed < 0)) {
+					x = end;
+					if(dom[tprop]) {
+						clearInterval(dom[tprop]);
+					};
+				}; 
+				(prop in document.body.style) ? (dom.style[prop] = x + "px") : (dom[prop] = x);
+			}, 20);			
+		};
+
+		// 滚动图显示函数 
+		function picShow(index) { 
+			moveTo(slide, "scrollLeft", 25, slide.offsetWidth * index);
+		};
+
+		// 两侧隐藏条的点击事件
+		leftBtn.onclick = function() { moveDire("left"); };
+		rightBtn.onclick = function() {	moveDire("right"); };
+
+		function moveDire(direction) {
+			if(direction == "left" || direction == "right") {
+				clearTimer();
+				(direction == "right") ? index++ : index--; 
+				index = (index < 0) ? (imgs.length - 1) : index;
+				index = (index >= imgs.length) ? 0 : index; 
+				picShow(index);
+				timer = setInterval(function() { moveDire("right"); }, 2000); 
+			};
+		};
+
+		// 定时器
+		var timer = setInterval(function() { moveDire("right"); }, 2000); 
+		// 清除定时器
+		function clearTimer() {
+			if(timer) {
+				clearInterval(timer);
+			};
+		};
+
+		// 点击对应数字圆点时 图片相应滚动
+		for(var i = 0; i < imgs.length; i++) {
+			pnums[i].index = i;
+			pnums[i].onclick = function() {
+				clearTimer(); 
+				index = this.index; 
+				picShow(index);
+				timer = setInterval(function() { moveDire("right"); }, 2000); 
+			};
+		};
+	</script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>返回顶部</title>
+	<meta name="description" content="" /> 
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			border: none;
+		} 
+		div {
+			width: 900px;
+			height: 1000px;
+			margin: 0 auto;
+			background: url(images/bgback.jpg) center center repeat-y;
+		}
+		.lump {
+			width: 20px;
+			height: 100px;
+			text-align: center;
+			line-height: 25px;
+			border: 1px solid gray;
+			position: absolute;
+			display: none;
+		}
+	</style>
+</head>
+<body> 
+	<div id="lump" class="lump"><span>返回顶部<span></div>
+	<div>&nbsp;</div>
+
+	<script type="text/javascript">
+		var lump = document.getElementById("lump");
+
+		// 获取页面滚动条的scrollLeft
+		function getScrollTop(tag) { 
+			var scrollPos = 0;  
+			if(window.pageYOffset) {  
+				scrollPos = window.pageYOffset; 
+			}else if(document.compatMode && document.compatMode != 'BackCompat') {  //ie下： compatMode 是html文档解析的类型，若值为BackCompat的话，属于怪异模型解析。 
+				scrollPos = document.documentElement.scrollTop; 
+			}else { 
+				scrollPos = document.body.scrollTop; 
+			};
+			tag.style.display = (scrollPos > 0) ? "block" : "none"; 
+			return scrollPos; 
+		};
+
+		// 获取页面可视宽高
+		var viewHeight = document.documentElement.clientHeight;   // documentElement 文档的根节点
+		var viewWidth = document.documentElement.clientWidth;
+
+		// 获取块 lump的位置
+		function getPos() {
+			lump.style.top = getScrollTop(lump) + viewHeight - 120 + "px";  
+			lump.style.left = viewWidth - 30 + "px";
+		};
+		getPos();
+		window.onscroll = function() { 
+			getPos();
+		};
+
+		// 块 lump 的点击事件
+		lump.onclick = function() {  
+			if(window.pageYOffset) {    // pageYOffset: 浏览器顶部距离页面顶部的距离；；ie下:不支持pageTOffset
+				if(isFirefox = navigator.userAgent.indexOf("Firefox") > 0) {
+					document.documentElement.scrollTop = 0;   // firefox 浏览器下
+				}else {
+					document.body.scrollTop = 0;  
+				};				
+			}else if(document.compatMode && document.compatMode != 'BackCompat') { 
+				document.documentElement.scrollTop = 0;  
+			}else { 
+				document.body.scrollTop = 0; 
+			};
+		};
+	</script>
+</body>
+</html>
