@@ -120,7 +120,7 @@
 				if(window.getComputedStyle) {
 					value = document.defaultView.getComputedStyle(tag, null)[prop];
 				}else {
-					value = window.currentStyle[prop];
+					value = tag.currentStyle[prop];
 				};
 			}else {
 				value = tag[prop];
