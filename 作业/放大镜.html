@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>放大镜</title>
+	<meta name="description" content="" /> 
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			border: none; 
+		} 
+		.out {
+			width: 352px;
+			margin-left: 100px;
+			position: relative;
+		} 
+		.pic {
+			width: 350px;
+			height: 350px;
+			cursor: move;
+			border: 1px solid gray; 
+			overflow: hidden;
+			position: relative;
+		}
+		.lump {
+			width: 175px;
+			height: 175px;
+			cursor: move;
+			background-color: yellow; 
+			opacity: 0.4;
+			filter:alpha(opacity=40);
+			position: absolute;  
+			display: none;
+		}
+		.pone {
+			width: 350px;
+			height: 350px;
+		}
+		.pshow {
+			width: 400px;
+			height: 400px;
+			overflow: hidden;
+			border: 1px solid gray;
+			background-image: url(images/max.jpg); 
+			background-repeat: no-repeat;
+			position: absolute;
+			top: 0;
+			left: 351px;
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<div id="out" class="out">
+		<div id="pic" class="pic">
+			<div id="lump" class="lump">&nbsp;</div>
+			<img class="pone" src="images/min.jpg" alt="pic1" title="pic1" />
+		</div>
+		<div id="pshow" class="pshow">&nbsp;</div> 
+	</div> 
+	<script type="text/javascript">
+		var out = document.getElementById("out");
+		var pic = document.getElementById("pic");
+		var lump = document.getElementById("lump");
+		var pshow = document.getElementById("pshow");  
+		var timer = null;
+		// getStyle获取样式
+		function getStyle(tag, prop) {
+			var value;
+			if(prop in document.body.style) {
+				if(window.getComputedStyle) {
+					value = document.defaultView.getComputedStyle(tag, null)[prop];
+				}else {
+					value = tag.currentStyle[prop];
+				};
+			}else {
+				value = tag[prop];
+			};
+			value = parseFloat(value);
+			value = isNaN(value) ? 0 : value;
+			return value;
+		};  
+		
+		// 鼠标事件
+		pic.onmouseover = function(e) {
+			if(timer) {
+				clearTimeout(timer);
+			};
+			var e = e || window.event;
+			lump.style.display = "block"; 
+			pshow.style.display = "block"; 
+			// 获取相关数据
+			var outLeft = getStyle(out, "offsetLeft");  // 最外层距离左边距离
+			var outTop = getStyle(out, "offsetTop");   // 最外层距离上边距离
+			var lumpW = getStyle(lump, "offsetWidth");  // 小块宽高
+			var lumpH = getStyle(lump, "offsetHeight");  // 小块高
+			var picW = getStyle(pic, "clientWidth");   // 小图宽
+			var picH = getStyle(pic, "clientHeight");   // 小图高
+			var pShowW = getStyle(pshow, "clientWidth");   // 大图宽 
+			var pShowH = getStyle(pshow, "clientHeight");  // 大图高
+			var stop = document.documentElement.scrollTop || document.body.scrollTop;  // 当页面滚动时，上滚高度
+			var sleft = document.documentElement.scrollLeft || document.body.scrollLeft; // 当页面滚动时，左滚宽度
+
+			// 阻止默认行为
+			if(e.preventDefault) {
+				e.preventDefault();
+			}else {
+				e.returnValue = false;
+			}; 
+			
+			// 设置lump 小块初始位置
+			var endx = e.clientX - outLeft + sleft - lumpW / 2;
+			var endy = e.clientY - outTop + stop - lumpH / 2; 
+			lump.style.top = endy + "px";
+			lump.style.left = endx + "px";
+
+			document.onmousemove = function(e) {
+				var e = e || window.event;
+				
+				stop = document.documentElement.scrollTop || document.body.scrollTop;
+				sleft = document.documentElement.scrollLeft || document.body.scrollLeft; 
+				// 计算lump小块的 位置值
+				endx = e.clientX - outLeft + sleft - lumpW / 2;
+				endy = e.clientY - outTop + stop - lumpH / 2;  
+				endy = (endy < 0) ? 0 : endy;
+				endx = (endx < 0) ? 0 : endx; 
+				endy = (endy > picH - lumpH) ? picH - lumpH : endy;
+				endx = (endx > picW - lumpW) ? picW - lumpW : endx; 
+
+				lump.style.top = endy + "px";
+				lump.style.left = endx + "px";
+
+				// 获取所需放大图的值 
+				var pl = -(pShowW / lumpW * endx) + "px";
+				var pt = -(pShowH / lumpH * endy) + "px";  
+				pshow.style.backgroundPosition = pl + " " + pt; 
+			};
+		};
+		document.onmouseout = function() {
+			document.oumousemove = null;
+			timer = setTimeout(function() { 
+				lump.style.display = "none";
+				pshow.style.display = "none";
+			}, 50);
+		}; 
+	</script>
+</body>
+</html> 

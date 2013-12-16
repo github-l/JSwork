@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Document</title>
+	<meta name="description" content="" /> 
+	<script src="js/tween.js"></script>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			border: none;
+		}
+		ul,li {
+			list-style-type: none;
+		}
+		.con {
+			width: 510px;
+			height: 140px;
+			overflow: hidden;
+			position: relative;
+		}
+		.con li {
+			width: 210px;
+			height: 140px;
+			float: left;
+			position: relative;
+		}
+		.con img {
+			width: 210px;
+			height: 140px;
+			overflow: hidden;
+		}
+		.con .li0 {
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 1;
+		}
+		.con .li1 {
+			position: absolute;
+			top: 0;
+			left: 102px;
+			z-index: 2;
+		}
+		.con .li2 {
+			position: absolute;
+			top: 0;
+			left: 204px;
+			z-index: 3;
+		}
+		.con .li3 {
+			position: absolute;
+			top: 0;
+			left: 304px;
+			z-index: 4;
+		}.con .li4 {
+			position: absolute;
+			top: 0;
+			left: 408px;
+			z-index: 5;
+		}
+	</style>
+</head>
+<body> 
+	<div id="out" class="out">
+		<ul id="con" class="con">
+			<li class="li0"><img src="images/5.jpg" alt="pic1" title="pic1" /></li>
+			<li class="li1"><img src="images/6.jpg" alt="pic2" title="pic2" /></li>
+			<li class="li2"><img src="images/7.jpg" alt="pic3" title="pic3" /></li>
+			<li class="li3"><img src="images/8.jpg" alt="pic4" title="pic4" /></li>
+			<li class="li4"><img src="images/9.jpg" alt="pic5" title="pic5" /></li>
+		</ul>
+	</div>
+	<script type="text/javascript">
+		// 获取标签变量
+		var out = document.getElementById("out");
+		var con = document.getElementById("con");
+		var lis  = con.getElementsByTagName("li");
+		// 获取相关数据
+		var conW = con.clientWidth;	   // 
+		var liW = lis[0].offsetWidth;	// li的宽度
+		var lisNum = lis.length;   // li的个数 
+		
+		// 获取传入标签的样式或“scrollLeft”等的值
+		function getStyle(tag, prop) {
+			var value;
+			if(prop in document.body.style) {
+				if(window.getComputedStyle) {
+					value = document.defaultView.getComputedStyle(tag, null)[prop]; 
+				}else {
+					value = tag.currentStyle[prop];
+				};
+			}else {
+				value = tag[prop];
+			};
+			value = parseFloat(value);
+			value = (isNaN(value)) ? 0 : value; 
+			return value;
+		};
+
+		// moveTo函数 
+		function moveTo(dom, prop, step, end) {
+			var start = getStyle(dom, prop);
+			var stepT = 0;	
+			var tprop = "_t_" + prop;
+			if(dom[tprop]) {
+				clearInterval(dom[tprop]);
+			}; 
+			dom[tprop] = setInterval(function() {
+				stepT++;
+				if(stepT > step) {
+					if(dom[tprop]) {
+						clearInterval(dom[tprop]);
+					};
+					return;
+				}; 
+				var getValue = Tween.Back.easeOut(stepT, start, end - start, step);
+				(prop in document.body.style) ? (dom.style[prop] = getValue + "px") : (dom[prop] = getValue); 
+			}, 20);
+		};   
+
+		// 鼠标事件onmouseover  onmouseout
+		for(var i = 0; i < lis.length; i++) { 
+			lis[i].index = i;
+			lis[i].onmouseover = function() {  
+				for(var i = 0; i < lis.length; i++) {  
+					(i <= this.index) ?
+						moveTo(lis[i], "left", 1, (conW - liW) / (lisNum -1) * i) :
+							moveTo(lis[i], "left", 1, (conW - liW) / (lisNum -1) * i + (liW - (conW - liW) / (lisNum -1)));
+				};
+			};
+		};
+		con.onmouseout = function() {
+			for(var i = 0; i < lis.length; i++) {
+				moveTo(lis[i], "left", 1, conW / lisNum * i); 
+			};
+		};   
+	</script>
+</body>
+</html>
