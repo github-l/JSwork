@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Document</title>
+	<meta name="description" content="" />
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			border: none;
+		}
+		.out { 
+			border: 1px solid black;
+		}
+	</style>
+</head>
+<body>
+	<div id="out" class="out">&nbsp;</div>
+	<div id="con" class="con">&nbsp;</div>
+	<script type="text/javascript">
+		var out = document.getElementById("out");
+		var con = document.getElementById("con");
+
+		var ltime = new Date(2013,11,20);
+		var ltotalmills = ltime.getTime(); // 获取总毫秒数
+		
+		out.innerHTML ="限时抢购：" + (ltime.getMonth() + 1) + "月" + ltime.getDate() + "日" +ltime.getHours() + "时" + ltime.getMinutes() + "分" + ltime.getSeconds() + "秒" + ltime.getMilliseconds() + "毫秒";
+		// 
+		var timer = setInterval(function() {			
+			con.innerHTML = "";
+			// 倒计时时间
+			var ntime = new Date(); 
+			var ntotalmillis = ntime.getTime();   // 获取当前时间毫秒数
+			// 清除定时器
+			if(ltotalmills <= ntotalmillis) { 
+				clearInterval(timer);
+				con.innerHTML = "倒计时已结束";
+				return;
+			};
+			// 获取相关数据
+			var totalmillis = ltotalmills - ntotalmillis;  // 相差总毫秒数
+			var overmillis = totalmillis % 1000;  // 毫秒 
+			var oversec = Math.floor(totalmillis / 1000) % 60;	// 秒 
+			var overmin = Math.floor(totalmillis / 60000) % 60;	// 分
+			var overhour = Math.floor(totalmillis / 3600000) % 24;	// 时 
+			var overday = Math.floor(totalmillis / 86400000);	// 日
+			con.innerHTML ="距离限时还剩：" + overday + "日" + overhour + "时" + overmin + "分" + oversec + "秒" + overmillis + "毫秒";
+		}, 1);
+	</script>
+</body>
+</html> 

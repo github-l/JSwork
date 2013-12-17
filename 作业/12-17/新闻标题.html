@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Document</title>
+	<meta name="description" content="" /> 
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			border: none;
+		}
+		.out {
+			text-align: center;
+		}
+		input {
+			width: 50px;
+			border: 1px solid #eee;
+		}
+		ul,li {
+			list-style-type: none
+		} 
+		.news {
+			width: 200px;
+			text-align: left;
+			margin: 0 auto;
+			border: 1px solid black;
+		}
+		.news li {
+			height: 30px;
+			line-height: 30px;
+			padding-left: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div id="out" class="out">
+		<ul id="news" class="news">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+		</ul>
+		<input id="newBtn" type="button" value="更新" /> 
+	</div>
+	<script type="text/javascript">
+		var newUl = document.getElementById("news");
+		var lis = newUl.getElementsByTagName("li"); 
+		var newBtn = document.getElementById("newBtn");
+		var newArr = ["新闻标题1","新闻标题2","新闻标题3","新闻标题4","新闻标题5","新闻标题6","新闻标题7","新闻标题8","新闻标题9","新闻标题10","新闻标题11","新闻标题12","新闻标题13","新闻标题14","新闻标题15","新闻标题16","新闻标题17","新闻标题18","新闻标题19","新闻标题20","新闻标题21","新闻标题22","新闻标题23","新闻标题24","新闻标题25","新闻标题26","新闻标题27","新闻标题28","新闻标题29","新闻标题30","新闻标题31","新闻标题32","新闻标题33"];
+		
+		var lisNum = lis.length;	// li标签总数
+		var newNum = newArr.length;  // 新闻总数
+		var flag;                  // 变量标记 是否已经存在
+		// 随机选择标题函数
+		function newChange(){
+			var arr = [];
+			for(var i = 0; i < lisNum; i++) {
+				if(lisNum < arr.length){
+					return;
+				};
+				var newIndex = Math.floor(Math.random() * newNum);
+				flag = true;
+				for(var j = 0; j < arr.length; j++) {
+					if(newIndex == arr[j]) { 
+						i--;
+						flag = false;
+						break;
+					};
+				}; 
+				if(flag) {
+					arr.push(newIndex);
+				};
+			}; 
+			for(var i = 0; i < lisNum; i++) { 
+				lis[i].innerHTML = newArr[arr[i]];
+			}; 
+		};
+		// 更新按钮 事件
+		newBtn.onclick = function() {
+			newChange();
+		};
+	</script>
+</body>
+</html>
