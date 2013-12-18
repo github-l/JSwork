@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Document</title>
+	<meta name="description" content="" /> 
+	<style type="text/css">
+		.cf:bofore,.cf:after {
+			content: " ";
+			display: table;
+		}
+		.cf:after{
+			clear: both;
+		}
+		.cf {
+			*zoom: 1;
+		}
+		* {
+			margin: 0;
+			padding: 0;
+			border: none;
+		}
+		ul,li {
+			list-style-type: none;
+		}
+		.out {
+			width: 280px;
+			text-align: center;
+			margin: 0 auto; 
+		}
+		.lbtn,.rbtn {
+			width: 40px;
+			height: 30px;
+			line-height: 30px;
+		}
+		.lbtn {
+			float: left;
+		}
+		.rbtn {
+			float: right;
+		}
+		.con-top {
+			width: 196px;
+			height: 30px;
+			line-height: 30px; 
+			float: left;
+		}
+		.con {
+			width: 280px;
+			height: 280px; 
+			float: left; 
+		}
+		.con li {
+			width: 40px;
+			height: 40px;
+			line-height: 40px; 
+			float: left;
+		}
+		.one { 
+			width: 100%;
+			float: left;
+		} 
+		.syear {
+			width: 60px;
+		}
+		.smonth {
+			width: 50px;
+		} 
+	</style>
+</head>
+<body>
+	<div id="out" class="out cf">
+		<div id="one" class="one">
+			<select id="syear" class="syear">
+				<option>2013</option>
+			</select>年
+			<select id="smonth" class="smonth">
+				<option>12</option>
+			</select>月 
+		</div>
+		<input id="lbtn" class="lbtn" type="button" value="《" />
+		<span id="con-top" class="con-top"></span>
+		<input id="rbtn" class="rbtn" type="button" value="》" />  
+		<ul id="con" class="con">
+			<li>日</li><li>一</li><li>二</li><li>三</li><li>四</li><li>五</li><li>六</li>
+		</ul> 
+	</div>
+	<script type="text/javascript"> 
+		var lbtn = document.getElementById("lbtn");
+		var rbtn = document.getElementById("rbtn");
+		var ctop = document.getElementById("con-top");
+		var con = document.getElementById("con"); 
+		
+		var syear = document.getElementById("syear");
+		var smonth = document.getElementById("smonth");
+		var syears = [];
+		var smonths = [];
+
+		// 获当前时间
+		var time = new Date();
+		var year = time.getFullYear(); 
+		var month = time.getMonth();
+		var conStr = "<li>日</li><li>一</li><li>二</li><li>三</li><li>四</li><li>五</li><li>六</li>";
+		getChange(11);
+		
+		// month发生变化、day发生变化
+		function getChange(mon) {
+			if(mon < 0) {
+				month = 11;
+				year--;
+			};
+			if(mon >= 12) {
+				month = 0;
+				year++;
+			};
+			con.innerHTML = conStr;
+			ctop.innerHTML = year + "年" + (month + 1) + "月";
+			// 同步改变年、月下拉框	
+			for(var i = 0; i < syears.length; i++) {
+				syears[i].selected = (year == (2000 + i)) ? "selected" : "";
+			};
+			for(var j = 0; j < smonths.length; j++) {
+				smonths[j].selected = (month == j) ? "selected" : "";
+			};
+
+			var ntime = new Date(year, month + 1, 0);
+			// 获取、设置天数 
+			var nDate = ntime.getDate();
+			// 判断当月第一天是周几
+			ntime.setDate(1);
+			var week = ntime.getDay();
+			for(var i = 0; i < nDate + week; i++) {
+				con.innerHTML += (i < week) ? "<li>&nbsp;</li>" : "<li>" + (i - week + 1) +"</li>";	
+			};
+		};
+
+		// 页面加载
+		window.onload = function() {
+			syear.innerHTML = "";
+			smonth.innerHTML = "";
+			bindYear();
+			bindMonth();
+			syears = syear.getElementsByTagName("option"); 
+			smonths = smonth.getElementsByTagName("option");
+		}; 
+
+		// 年、月下拉框数据绑定函数
+		function bindYear() {
+			for(var i = 2000; i < 2030; i++) {
+				syear.innerHTML += (year == i) ? "<option selected='selected'>" + i + "</option>" : "<option>" + i + "</option>";
+			};
+		};
+		function bindMonth() {
+			for(var i = 0; i < 12; i++) {
+				smonth.innerHTML += (month == i) ? "<option selected='selected'>" + (i + 1) + "</option>" : "<option>" + (i + 1) + "</option>";
+			}; 
+		};
+		
+		
+		// 左、右点击事件
+		lbtn.onclick = function() {
+			month--;
+			getChange(month);
+		};
+		rbtn.onclick = function() {
+			month++;
+			getChange(month);
+		};
+
+		// 年、月下拉框事件
+		syear.onchange = function() {  
+			year = syear.value;
+			getChange(month);
+		};
+		smonth.onchange = function() {  
+			month = smonth.value - 1;
+			getChange(month);
+		};
+	</script>
+</body>
+</html>
