@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Document</title>
+	<meta name="description" content="" />
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<style type="text/css">
+		.cf:before,.cf:after {
+			content: " ";
+			display: table;
+		}
+		.cf:after {
+			clear: both;
+		}
+		.cf {
+			*zoom: 1;
+		}
+		* {
+			margin: 0;
+			padding: 0;
+			font-size: 16px;
+		} 
+		body {
+			position: relative;
+		}
+		strong {
+			font-weight: normal;
+		}
+		ul {
+			list-style: none;
+		}
+		.login,.register {
+			width: 200px;
+			height: 200px; 
+			text-align: center;
+			background-color: gray; 
+			position: absolute;
+			top: 100px;
+			left: 40%;
+ 		}
+		input {
+			width: 110px;
+			height: 20px;
+		}
+		#regbtn,#logbtn,.closebtn,#issuebtn {
+			width: 60px;
+		}
+		
+		.out {
+			width: 800px;
+			margin: 0 auto;  
+		}
+		.logreg { 
+			width: 100%;
+			height: 100%;
+			background-color: #FAFAFA;
+			opacity: 0.8;
+			filter:alpha(opacity=80);  
+			position: absolute;
+			top: 0;		
+			left: 0;
+			z-index: 1000;
+			display: none;    
+		}
+		.top {
+			width: 800px;
+			text-align: right;
+			background-color: gray; 
+		}
+		.top span {
+			margin: 0 5px;
+			cursor: pointer;
+		}
+		
+		.con {
+			width: 470px;
+			padding: 5px;
+			border: 1px solid gray;
+			float: left;
+		}
+		.con textarea {
+			width: 390px;
+			height: 80px;
+			margin-right: 15px;
+			resize: none;
+			overflow: auto;
+		}
+		.con li {
+			padding: 5px 0;
+			border-bottom: 1px dotted black;
+		}
+		.con p {
+			text-indent: 2em;
+			padding: 5px;
+		}
+		.con span {
+			cursor: pointer;
+		}
+
+		#topexit {
+			display: none;
+		}
+
+		/******用户列表*******/
+		.ulist {
+			width: 300px;
+			padding: 5px;
+			border: 1px solid gray;
+			float: right;
+		}
+		.ulist dl {
+			padding: 5px;
+			border: 1px solid #DFDFDF;
+		}
+		.ulist dt {	
+			font-size: 18px;
+			font-weight: bold;
+			background-color: #89B7C4;
+		}
+		.ulist dd {
+			margin: 5px;
+		}
+		.ulist strong,.ulist span {
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div class="out cf">
+		<div class="top"><span id="tip">查看谁在线</span>
+			<span id="toplog">登录</span> <span id="topreg">注册</span> <span id="topexit">退出</span>
+		</div>
+		
+		<div class="con">
+			<textarea class="issueinfo"></textarea><input id="issuebtn" type="button" value="发布" />
+			<ul class="con-list">
+			</ul>
+			<span class="prevWB">上一页</span><span class="nextWB">下一页</span>
+		</div> 
+		<div class="ulist">
+			<dl>
+				<dt>用户列表</dt>
+			</dl>
+			<span class="prevU">上一页</span><span class="nextU">下一页</span>
+		</div>
+	</div>
+	<div class="logreg cf">
+		<div class="login">
+			<span>用户名：</span><input class="txtlog" type="text" />
+			<span>密&nbsp;&nbsp;码：</span><input class="pswlog" type="password" />
+			<input id="logbtn" type="submit" value="登录" />
+			<input class="closebtn" type="button" value="关闭" />			
+		</div>
+		<div class="register">
+			<span>用户名：</span><input class="txtreg" type="text" />
+			<span>密&nbsp;&nbsp;码：</span><input class="pswreg" type="password" />
+			<input id="regbtn" type="submit" value="注册" />
+			<input class="closebtn" type="button" value="关闭" />
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		// 登录、注册面板 (关闭)
+		$("#toplog").bind("click", function() {
+			$(".login").css("z-index", 5); 
+			$(".register").css("z-index", 0); 
+			$(".logreg").css("display", "block"); 
+		})
+		$("#topreg").bind("click", function() {
+			$(".login").css("z-index", 0); 
+			$(".register").css("z-index", 5);
+			$(".logreg").css("display", "block");
+		})
+		$(".closebtn").bind("click", function() {
+			$(".logreg").css("display", "none");
+		}) 
+
+		// 创建script标签
+		function addScript(url){
+			var script = document.createElement("script");
+			script.src = url;
+			document.body.appendChild(script);
+		}
+
+		// 登录 
+        $("#logbtn").bind("click", function() { 
+			if($(".txtlog").val() == "" || $(".pswlog").val() == "") {
+				alert("用户名、密码不能为空！");
+				return;
+			}  
+			var url = "http://ajaxh518.taobaoxyz.com/api/user/?method=login&jsoncb=logincb&name=" +			$(".txtlog").val() + "&password=" + $(".pswlog").val();
+			addScript(url);
+		})
+		function logincb(data) {
+			if(data.done) {
+				$(".logreg").css("display", "none");
+				alert("登录成功！");
+				$("#toplog").hide();
+				$("#topreg").hide();
+				$("#topexit").show();
+				showUName = $(".txtlog").val();
+				logUName = $(".txtlog").val();
+				$(".txtlog").val("");
+				$(".pswlog").val("");
+				// 获取该用户信息   并获取已发微博list
+				getUInfo(showUName);
+			}else {
+				alert(data.message);
+			}
+		}
+
+		// 注册
+		$("#regbtn").bind("click", function() {
+			if($(".txtreg").val() == "" || $(".pswreg").val() == "") {
+				alert("用户名、密码不能为空！");
+				return;
+			}
+			var url = "http://ajaxh518.taobaoxyz.com/api/user/?method=regist&jsoncb=registcb&name=" + $(".txtreg").val() + "&password=" + $(".pwdreg").val();
+			addScript(url);
+		})
+		function registcb(data) {
+			if(data.done) {
+				$(".logreg").css("display", "none");
+				alert("注册成功！");
+				$("#toplog").hide();
+				$("#topreg").hide();
+				$("#topexit").show();
+				$(".txtreg").val("");
+				$(".pswreg").val(""); 
+			}else {
+				alert(data.message);
+			}
+		}
+
+		// 退出
+		$("#topexit").bind("click", function() {
+			var url = "http://ajaxh518.taobaoxyz.com/api/user/?method=logout&jsoncb=exitcb";
+			addScript(url);
+		})
+		function exitcb(data) {
+			if(data.done) {
+				$("#topexit").hide();
+				$("#toplog").show();
+				$("#topreg").show();
+				return;
+			}			
+		}
+		
+		// 获取指定用户信息  /****************************/ 
+		var showUId = null;
+		var logUName = null;
+		var showUName = null;
+		function getUInfo(uname) { 
+			var url = "http://ajaxh518.taobaoxyz.com/api/user/?method=getinfo&jsoncb=getinfocb&name=" + uname; 
+			addScript(url);
+		}
+		function getinfocb(info) {
+			if(info.done) {  
+				showUId = info.data._id; 
+				pageWBIndex = 0;
+				getWBList();  
+			}else {
+				alert(info.message);
+			}
+		}
+		
+		// 查看谁在线
+		/*	$("#tip").bind("click", function() {   watchU();  })*/
+		
+		watchU();
+		function watchU() { 
+			var url = "http://ajaxh518.taobaoxyz.com/api/user/?method=getinfo&jsoncb=watchUInfo"; 
+			addScript(url);
+		}
+		function watchUInfo(info) {
+			if(info.done) {  
+				logUName = info.data.name;
+				showUName = info.data.name;
+				showUId = info.data._id;
+				getWBList();
+				$("#toplog").hide();
+				$("#topreg").hide();
+				$("#topexit").show();
+			}else { 
+				$("#topexit").hide();
+				$("#toplog").show();
+				$("#topreg").show();
+			}
+		}
+
+		/*******获取已注册用户列表********/		
+		// 获取用户列表 上页、下页
+		$(".nextU").bind("click", function() {
+			pageUIndex++;
+			getUList();
+		})
+		$(".prevU").bind("click", function() {
+			pageUIndex--;
+			getUList();
+		})
+
+		var pageUIndex = 0;
+		var pUCount = 20;
+		getUList();
+		function getUList() {
+			var url = "http://ajaxh518.taobaoxyz.com/api/user/?method=listuser&jsoncb=listusercb&page="+pageUIndex+"&count="+pUCount; 
+			addScript(url);
+		}
+		function listusercb(list) {
+			if(list.done) {
+				if(list.data.length <= 0) {
+					return;
+				}
+				$(".ulist dl").html("");
+				for(var i = 0; i < list.data.length; i++) {
+					var str = "<dd><strong>" + list.data[i].name + "</strong></dd>";
+					$(str).appendTo($(".ulist dl")); 
+				}
+				// 用户列表操作
+				$(".ulist").find("dd").each(function(n) {
+					$(this).hover(function() {
+						$(this).css("background-color","#eee")
+								.css("color", "red")
+								.css("text-decoration", "underline")
+					},function() {
+						$(this).css("background-color","#fff")
+								.css("color", "black")
+								.css("text-decoration", "none")
+					})
+					.bind("click", function() {
+						showUName = $(this).text();
+						getUInfo(showUName); 
+					})
+				})
+			}
+		}
+		
+		// 获取指定用户已发布微博列表  
+		var pageWBIndex = 0;
+		var pWBCount = 10;
+		function getWBList() {
+			var url = "http://ajaxh518.taobaoxyz.com/api/msg/?method=list&jsoncb=wblist&uid="+showUId+"&page="+pageWBIndex+"&count="+pWBCount;
+			addScript(url);
+		}
+		function wblist(list) { 
+			if(list.done) {
+				if(list.data.length <= 0) {
+					return;
+				}
+				$(".con-list").html("");
+				for(var i = 0; i < list.data.length; i++) {
+					var str ="<li><strong>" + showUName + "</strong><span>" + list.data[i].time + "</span><p>" + list.data[i].text + "</p><span id='praBtn'>赞(" + list.data[i].good + ")</span><span id='delBtn'>删除</span></li>";
+					$(str).appendTo($(".con-list"));
+				}
+
+				//　删除微博 、赞一下
+				$(".con-list #delBtn").each(function(n) {
+					$(this).bind("click", function() {
+						$(this).parent().remove();
+					}) 
+				}) 
+				$(".con-list #praBtn").each(function(n) {
+					$(this).bind("click", function() {
+						$(this).html("赞(" + (parseInt($(this).html().substr(2)) + 1) + ")");
+					})
+				}) 
+			}else {
+				alert(list.message);
+			}
+		}
+		// 获取已发微博 上页、下页
+		$(".prevWB").bind("click", function() {
+			pageWBIndex--; 
+			getWBList();
+		})
+		$(".nextWB").bind("click", function() {
+			pageWBIndex++; 
+			getWBList();
+		})
+		
+		// 发布微博
+		$("#issuebtn").bind("click", function() {
+			if(!$(".issueinfo").val()) {
+				alert("发布内容不能为空！");
+				return;
+			}
+			var url = "http://ajaxh518.taobaoxyz.com/api/msg/?method=add&jsoncb=issuewb&text=" + $(".issueinfo").val();
+			addScript(url);
+		})
+		function issuewb(data) {
+			if(data.done) {
+				alert("发布成功！");
+				var nowTime = new Date();
+				var str ="<li><strong>" + logUName + "</strong><span>" + nowTime.getFullYear() + "年" + (nowTime.getMonth() + 1) + "月" + nowTime.getDate()  + "日" + "</span><p>" + $(".issueinfo").val() + "</p><span id='praBtn'>赞(0)</span><span id='delBtn'>删除</span></li>";
+				$(str).prependTo($(".con-list"));
+				$(".issueinfo").val("");
+
+				//　删除微博
+				$("#delBtn").bind("click", function() {
+					$(this).parent().remove();
+				}) 
+				// 赞一下
+				$("#praBtn").bind("click", function() { 						
+					$(this).html("赞(" + (parseInt($(this).html().substr(2)) + 1) + ")");
+				})
+			}else {
+				alert(data.message);
+			} 
+		}
+	</script>
+</body>
+</html> 
