@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Document</title>
+	<meta name="description" content="" />
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
+
+	<style type="text/css">
+		.cf:before,.cf:after {
+			content: " ";
+			display: table;
+		}
+		.cf:after {
+			clear: both;
+		}
+		.cf {
+			*zoom: 1;
+		}
+		* {
+			margin: 0;
+			padding: 0;
+			font-size: 16px;
+		} 
+		var {
+			font-style: normal;
+		}
+		.out {
+			width: 900px;
+			margin: 0 auto; 
+		}	
+
+		/**头部**/
+		.top-nav {
+			width: 900px;
+			height: 42px;       
+			line-height: 40px;
+			margin: 0 auto 15px; 
+			background-color: #333333; 
+		}
+		.top-nav span { 
+			color: #428BCA;
+			padding-left: 30px;
+		}
+		.top-nav a:hover {
+			color: red;
+		}
+
+		/**中间内容**/
+		.row {
+			width: 900px;
+			margin: 0 auto;
+			padding: 3px;
+			border: 1px solid gray;
+		}
+		.row .panel-default .panel-heading {
+			background-color: #428BCA;
+		} 
+		.issueLump { 
+			height: 110px;
+			margin-bottom: 10px;
+			position: relative;
+		}
+		#issueinfo { 
+			resize: none;
+			margin: 0 0 5px 0;
+		}
+		#faceBtn {  
+			margin-left: 5px;
+			padding-left: 22px;
+			background: url('wb-images/face-bg.jpg') 0 0 no-repeat;
+			float: left;
+		}
+		#issueBtn {
+			width: 80px;
+			height: 30px;
+			float: right;
+		}	
+
+		/***表情***/
+		.qqface {
+			width: 407px;
+			height: 190px;
+			border: 1px solid gray;
+			background: url('wb-images/qqFace.png') 0 0 no-repeat;
+			position: absolute;
+			top: 110px;
+			left: 12px;
+			z-index: 1000;
+			display: none;
+		}
+		.qqface a {
+			width: 27px;
+			height: 27px; 
+			text-align: center;
+			line-height: 27px;
+			border: 1px solid #f3f3f3; 
+			float: left;
+		}
+
+		/**翻页**/
+		.pager { 
+			margin-top: -10px;
+			text-align: right;
+		}
+		.pager a {
+			font-size: 14px; 
+		}  
+		.btn-default {
+			height: 42px;
+			color: #428BCA; 
+			margin-right: 20px;
+			background-color: #333333;
+			border: none;
+			float: right;
+		}
+
+		/**微博列表**/ 
+		.con-list p {
+			width: 100%;
+			margin: 0 ;
+			text-indent: 2em;
+		}
+		.con-list span {
+			font-size: 14px;
+			float: right;
+		}
+		.con-list div {
+			text-align: right; 
+		}
+		.con-list var { 
+			font-size: 14px;
+			margin: 0 5px;
+			cursor: pointer; 
+		}
+
+		/**用户列表**/
+		#listU a {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+ 	</style>
+</head>
+<body>
+	<div class="out">
+		<div class="top-nav"> 
+			<span>你好，</span>
+			<a id="logName" href="#">&nbsp;</a> 
+			<button id="exitBtn" type="button" class="btn btn-default">退出</button>
+		</div>
+		<div class="row">
+			<div class="col-xs-9 panel panel-default">
+				<div class="issueLump">
+					<textarea id="issueinfo" class="form-control" rows="3"></textarea>
+					<span id="faceBtn">表情</span>
+					<div class="qqface"> 
+						<a href="#" class="f14" title="微笑" i="15"></a>
+						<a href="#" class="f1" title="撇嘴" i="16"></a>
+						<a href="#" class="f2" title="色" i="17"></a>
+						<a href="#" class="f3" title="发呆" i="18"></a>
+						<a href="#" class="f4" title="得意" i="19"></a>
+						<a href="#" class="f5" title="流泪" i="20"></a>
+						<a href="#" class="f6" title="害羞" i="21"></a>
+						<a href="#" class="f7" title="闭嘴" i="22"></a>
+						<a href="#" class="f8" title="睡" i="23"></a>
+						<a href="#" class="f9" title="大哭" i="24"></a> 
+					</div>
+					<input id="issueBtn" class="btn btn-success" type="botton" value="发布" />
+				</div>
+				<div class="panel-heading">微博列表</div> 
+				<ul class="list-group panel-body con-list">
+				</ul> 
+				<ul class="pager">
+					<li><a id="prevWB" href="#">上页</a></li>
+					<li><a id="nextWB" href="#">下页</a></li>
+				</ul>
+			</div>
+			<div class="col-xs-3 panel panel-default">
+				<div class="panel-heading">微博用户</div>  
+				<div id="listU" class="list-group panel-body"> 
+				</div>   
+				<ul class="pager"> 
+					<li><a id="nextU" href="#">换一组</a></li>
+				</ul>
+			</div>
+		</div>
+	</div> 
+	
+	<script>
+		// 声明用户信息   
+		var showUName = null; 
+		var showUId = null; 
+		var pageUIndex = 0;
+		var pUCount = 10; 
+		var pageWBIndex = 0;
+		var pWBCount = 10;
+
+		// 创建script标签
+		function addScript(url){
+			var script = document.createElement("script");
+			script.src = url;
+			document.body.appendChild(script);
+		}
+
+
+		/*********判断是否有用户登录**********/ 
+		judgeULog();
+		function judgeULog() {  
+			var url = "http://ajaxh518.taobaoxyz.com/api/user/?method=getinfo&jsoncb=judgeULogcb"; 
+			addScript(url);
+		}
+		function judgeULogcb(info) {
+			if(info.done) {   
+				$("#logName").html(info.data.name).attr({"data-id":info.data._id}); 
+				showUName = info.data.name;
+				showUId = info.data._id; 
+				pageWBIndex = 0;
+				getWBList();  				
+			}else {
+				location.href = "logreg.html";
+			}
+		}
+
+
+		/*******点击登录人的name，获取微博信息*****/
+		$("#logName").bind("click", function() {
+			showUName = $(this).html();
+			showUId = $(this).attr("data-id"); 
+			pageWBIndex = 0;
+			getWBList();  
+		})
+
+
+		/**********获取已注册用户列表**********/ 
+		getUList();
+		function getUList() {
+			var url = "http://ajaxh518.taobaoxyz.com/api/user/?method=listuser&jsoncb=listusercb&page="+pageUIndex+"&count="+pUCount; 
+			addScript(url);
+		}
+		function listusercb(list) {
+			if(list.done) {
+				if(list.data.length < pUCount) {
+					if(list.data.length <= 0) { 
+						pageUIndex = 0;
+						getUList();
+						return;
+					}
+				}				
+				$("#listU").html("");
+				for(var i = 0; i < list.data.length; i++) {
+					var str = "<a data-id=" + list.data[i]._id + " href='#' class='list-group-item'>"+list.data[i].name+"</a>";
+					$(str).appendTo($("#listU")); 
+				}
+				handleU();	// 用户列表 点击操作
+			}
+		}
+		// 用户列表 点击操作
+		function handleU() {
+			$("#listU").find("a").bind("click", function() {
+				showUName = $(this).html(); 
+				showUId = $(this).attr("data-id"); 
+				pageWBIndex = 0;
+				getWBList();  
+			})
+		}
+		// 用户列表 换一组
+		$("#nextU").bind("click", function() {
+			pageUIndex++;
+			getUList();
+		})
+
+
+		/***********获取指定用户微博列表***********/
+		function getWBList() {
+			var url = "http://ajaxh518.taobaoxyz.com/api/msg/?method=list&jsoncb=wblist&uid="+showUId+"&page="+pageWBIndex+"&count="+pWBCount;
+			addScript(url);
+		}
+		function wblist(list) { 
+			if(list.done) {
+				if(list.data.length <= 0) {
+					return;
+				}
+				$(".con-list").html("");
+				for(var i = 0; i < list.data.length; i++) {
+					var strVal = getIssueVal(list.data[i].text);
+					var strTime = getWBTime(list.data[i].time);
+					var str = "<li class='list-group-item'><strong>" + showUName + "</strong><span>" + strTime + "</span><p>" + strVal + "</p><div><var id='praBtn'>赞(" + list.data[i].good + ")</var><var id='delBtn'>删除</var></div></li>";					 
+					$(str).appendTo($(".con-list"));
+				}
+				handleWB();  // 删除微博 、赞一下（并且判断用不用隐藏删除按钮，及发布模块）		
+			}else {
+				alert(list.message);
+			}
+		}			
+		// 判断 发布信息里 是否存在 表情，并返回
+		function getIssueVal(strVal) { 
+			strVal = strVal.replace(/\/微笑/gi,"<img src='wb-images/14.gif' alt='微笑' />"); 
+			strVal = strVal.replace(/\/撇嘴/gi,"<img src='wb-images/1.gif' alt='撇嘴' />");
+			strVal = strVal.replace(/\/色/gi,"<img src='wb-images/2.gif' alt='色' />");
+			strVal = strVal.replace(/\/发呆/gi,"<img src='wb-images/3.gif' alt='发呆' />");
+			strVal = strVal.replace(/\/得意/gi,"<img src='wb-images/4.gif' alt='得意' />");
+			strVal = strVal.replace(/\/流泪/gi,"<img src='wb-images/5.gif' alt='流泪' />");
+			strVal = strVal.replace(/\/含羞/gi,"<img src='wb-images/6.gif' alt='含羞' />");
+			strVal = strVal.replace(/\/闭嘴/gi,"<img src='wb-images/7.gif' alt='闭嘴' />");
+			strVal = strVal.replace(/\/睡/gi,"<img src='wb-images/8.gif' alt='睡' />");
+			strVal = strVal.replace(/\/大哭/gi,"<img src='wb-images/9.gif' alt='大哭' />");
+			return strVal;
+		}	
+		// 获取时间 （时间转换）
+		function getWBTime(ntime) {
+			var nowTime = new Date(ntime);
+			var gtime = nowTime.getFullYear() + "-" + updateT((nowTime.getMonth()+1)) + "-" + updateT(nowTime.getDate()) + " " + updateT(nowTime.getHours()) + ":" + updateT(nowTime.getMinutes());
+			return gtime;
+		}
+		// 时间 一位数前加 0
+		function updateT(time) {
+			if(time < 10) {
+				time = "0" + time;
+			}
+			return time;
+		}
+		// 删除微博 、赞一下
+		function handleWB() {  
+			if($("#logName").attr("data-id") != showUId) { 
+				$(".issueLump").hide();
+				$(".con-list #delBtn").each(function(n) {
+					$(this).hide();
+				}) 
+			}else {
+				$(".issueLump").show();
+			}
+			$(".con-list #delBtn").each(function(n) {
+				$(this).bind("click", function() {
+					$(this).parent().parent().remove();
+				}) 
+			}) 
+			$(".con-list #praBtn").each(function(n) {
+				$(this).bind("click", function() {
+					$(this).html("赞(" + (parseInt($(this).html().substr(2)) + 1) + ")");
+				})
+			}) 
+		}		
+		// 微博列表 上页、下页
+		$("#prevWB").bind("click", function() {
+			pageWBIndex--; 
+			getWBList();
+		})
+		$("#nextWB").bind("click", function() {
+			pageWBIndex++; 
+			getWBList();
+		})
+
+
+		/**********发布微博************/ 
+		$("#issueBtn").bind("click", function() { 
+			if(!$("#issueinfo").val()) {
+				alert("发布内容不能为空！");
+				return;
+			}
+			var url = "http://ajaxh518.taobaoxyz.com/api/msg/?method=add&jsoncb=issuewb&text=" + $("#issueinfo").val();
+			addScript(url);
+		})
+		function issuewb(data) {
+			if(data.done) {
+				alert("发布成功！");
+				// 刷新微博列表
+				pageWBIndex = 0;
+				getWBList();
+			}else {
+				alert(data.message);
+			} 
+		}		
+
+		/*******退出*******/
+		$("#exitBtn").bind("click", function() {
+			var url = "http://ajaxh518.taobaoxyz.com/api/user/?method=logout&jsoncb=exitcb";
+			addScript(url);
+		})
+		function exitcb(data) {
+			if(data.done) {
+				location.href = "logreg.html";
+				return;
+			}			
+		}
+
+
+		/********qqFace表情*********/
+		$("#faceBtn").bind("click", function() {
+			if($(".qqface").css("display") == "none") { 
+				$(".qqface").show();
+			}else {
+				$(".qqface").hide();
+			}			
+		})
+		$(".qqface").find("a").each(function(n) {
+			$(this).bind("click", function() {
+				$("#issueinfo").focus();  // 这句要写在textarea的value值 前面，使其焦点在右边显示
+				var issueVal = $("#issueinfo").val() + "/" + $(this).attr("title");
+				$("#issueinfo").val(issueVal);	
+				$(".qqface").hide();
+			})
+		})
+	</script>
+</body>
+</html> 

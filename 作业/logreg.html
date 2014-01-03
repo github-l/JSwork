@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Document</title>
+	<meta name="description" content="" />
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
+
+	<style type="text/css">
+		.cf:before,.cf:after {
+			content: " ";
+			display: table;
+		}
+		.cf:after {
+			clear: both;
+		}
+		.cf {
+			*zoom: 1;
+		}
+		* {
+			margin: 0;
+			padding: 0;
+			font-size: 16px;
+		}  
+		.row {
+			width: 400px;
+			margin: 90px auto;  
+		}
+		.row .panel-default .panel-heading {
+			background-color: #428BCA;
+		} 
+
+		.col-xs-12 .input-group { 
+			width: 300px; 
+			margin: 10px auto;
+		} 
+		.input-group-addon {
+			width: 70px;
+			text-align: right;
+		}
+		.logreg {
+			margin: 15px;
+			text-align: center;
+		}
+		.logreg button {
+			width: 80px;
+		}
+		
+		.regist {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="row login">
+		<div class="col-xs-12 panel panel-default"> 
+			<div class="panel-heading">账号登录</div>   
+			<div class="input-group">
+				<span class="input-group-addon">用户名</span>
+				<input id="txtLName" type="text" class="form-control" placeholder="name" />  
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">密码</span>
+				<input id="txtLPwd" type="text" class="form-control" placeholder="password" />
+			</div>
+			<div class="logreg">
+				<button id="log-logBtn" type="button" class="btn btn-success">登录</button>
+				<button id="log-regBtn" type="button" class="btn btn-default">注册</button>
+			</div>
+		</div>
+	</div> 
+
+	<div class="row regist">
+		<div class="col-xs-12 panel panel-default"> 
+			<div class="panel-heading">账号注册</div>   
+			<div class="input-group">
+				<span class="input-group-addon">用户名</span>
+				<input id="txtRName" type="text" class="form-control" placeholder="name" />  
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">密码</span>
+				<input id="txtRPwd" type="text" class="form-control" placeholder="password" />
+			</div>
+			<div class="logreg">
+				<button id="reg-regBtn" type="button" class="btn btn-success">注册</button>
+				<button id="reg-retBtn" type="button" class="btn btn-default">返回</button>
+			</div>
+		</div>
+	</div> 
+	<script>
+		// 创建script标签
+		function addScript(url){
+			var script = document.createElement("script");
+			script.src = url;
+			document.body.appendChild(script);
+		}
+
+		/*********登录页面**********/
+		// 登录
+		$("#log-logBtn").bind("click", function() {
+			if($("#txtLName").val() == "" || $("#txtLPwd").val() == "") {
+				alert("用户名、密码不能为空！");
+				return;
+			}  
+			var url = "http://ajaxh518.taobaoxyz.com/api/user/?method=login&jsoncb=logincb&name=" +			$("#txtLName").val() + "&password=" + $("#txtLPwd").val();
+			addScript(url);
+		})
+		function logincb(data) {
+			if(data.done) {
+				alert("登录成功！"); 
+				$("#txtLName").val("");
+				$("#txtLPwd").val("");
+				location.href = "index-wb.html";
+			}else {
+				alert(data.message);
+			}
+		}
+		// 跳转到注册
+		$("#log-regBtn").bind("click", function() {
+			$("#txtLName").val("");
+			$("#txtLPwd").val("");
+			$(".login").css("display", "none");
+			$(".regist").css("display", "block");
+		}) 
+
+		/*******注册页面********/
+		// 注册 
+		$("#reg-regBtn").bind("click", function() {
+			if($("#txtRName").val() == "" || $("#txtRPwd").val() == "") {
+				alert("用户名、密码不能为空！");
+				return;
+			}
+			var url = "http://ajaxh518.taobaoxyz.com/api/user/?method=regist&jsoncb=registcb&name=" + $("#txtRName").val() + "&password=" + $("#txtRPwd").val();
+			addScript(url);
+		})
+		function registcb(data) {
+			if(data.done) {
+				alert("注册成功！");
+				$("#txtRName").val("");
+				$("#txtRPwd").val(""); 
+				location.href = "logreg.html"; 
+			}else {
+				alert(data.message);
+			}
+		}
+		// 跳回到登录
+		$("#reg-retBtn").bind("click", function() {
+			$("#txtRName").val("");
+			$("#txtRPwd").val(""); 
+			$(".regist").css("display", "none");
+			$(".login").css("display", "block");
+		})  
+	</script>
+</body>
+</html> 
