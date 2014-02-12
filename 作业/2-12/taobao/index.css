@@ -1,0 +1,167 @@
+/**清浮动**/
+.cf:before,.cf:after {
+	content: " ";
+	display: table;
+}
+.cf:after {
+	clear: both;
+}
+.cf {
+	*zoom: 1;
+}
+/**reset**/
+* {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+ol,ul {
+	list-style-type: none;
+}
+var,em {
+	font-style: normal;
+}
+strong {
+	font-weight: normal;
+}
+a {
+	text-decoration: none;
+	color: black;
+}
+
+/**index-page**/
+.index {
+	width: 1190px; 
+	margin: 0 auto;  
+}
+
+.ind-nav {
+	height: 36px;
+	background-color: #7C4040; 
+}
+
+.ind-search {
+	height: 115px;
+	margin: 10px 0 6px 0;
+	background-color: #ff9966; 
+}
+ 
+.ind-con1-left {
+	width: 150px;
+	height: 580px;
+	background-color: #ff9966;
+	float: left;
+}
+.ind-con1-right {
+	width: 1030px;
+	height: 580px; 
+	float: right;
+}
+.ind-con1-right-nav {
+	width: 1030px;
+	height: 42px;
+	margin-bottom: 10px;
+	background-color: #ff9966;
+	float: left;
+}
+.ind-con1-right-slider {
+	width: 720px;
+	height: 530px;
+	margin-right: 10px;
+	background-color: #ff9966;
+	float: left;
+}
+.ind-con1-right-news {
+	width: 300px;
+	height: 530px;
+	background-color: #ff9966;
+	float: left;
+}
+
+.ind-con2 {
+	height: 93px;
+	margin: 23px 0;
+	background-color: #ff9966;
+}
+
+.ind-con3-left {
+	width: 790px; 
+	float: left;
+}
+.ind-con3-right {
+	width: 380px; 
+	float: right;
+}
+.ind-con3-left-title {
+	width: 790px;
+	height: 50px;
+	background-color: #ff9966;
+	float: left;
+}
+.ind-con3-left-shop {
+	width: 393px;
+	height: 270px; 
+	border: 1px solid #0000ff;
+	float: left;
+}
+.ind-con3-right-shop1 {
+	height: 1165px;
+	margin-bottom: 10px;
+	background-color: #ff9966;
+}
+.ind-con3-right-shop2 {
+	height: 2695px;
+	margin-bottom: 10px;
+	background-color: #ff9966;
+}
+.ind-con3-right-shop3 {
+	height: 250px;
+	background-color: #ff9966;
+}
+ 
+.ind-con4-title { 
+	width: 1190px;
+	height: 40px;
+	margin-top: 23px;
+	background-color: #ff9966;
+	float: left;
+}
+.ind-con4-shop {
+	width: 168px;
+	height: 195px;
+	margin-top: 10px;
+	border: 1px solid #cc0099;
+	float: left;
+}
+ 
+ .ind-con5 {  
+	text-align: center; 
+ }
+.ind-con5-img1 {
+	width: 730px;
+	height: 92px;
+	margin: 15px 8px;
+	border: 1px solid #cc0099;
+}
+.ind-con5-img2 {
+	width: 190px;
+	height: 92px;
+	margin: 15px 8px;
+	border: 1px solid #cc0099;
+}
+
+.ind-con6 { 
+	height: 180px;
+	margin-top: 23px;
+	background-color: #ff9966;
+}
+
+.ind-con7 {
+	height: 42px; 
+	background-color: #ff99cc;
+}
+
+.ind-con8 {
+	height: 100px; 
+	background-color: #cc9933;
+}

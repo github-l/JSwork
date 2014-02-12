@@ -1,0 +1,161 @@
+/**清浮动**/
+.cf:befor,.cf:after {
+	content: " ";
+	display: table;
+}	
+.cf:after {
+	clear: both;
+}	
+.cf {
+	*zoom: 1;
+}
+/**reset**/
+* {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+ul,ol {
+	list-style-type: none;
+}
+img {
+	vertical-align: top;
+}
+a {
+	text-decoration: none;
+}
+var,em {
+	font-style: normal;
+}
+
+/**index-page**/
+.ind-nav {
+	height: 42px;
+	background-color: #ff9933;
+}
+.ind-con {
+	width: 1000px;
+	margin: 0 auto;
+}
+
+.ind-con-search {
+	height: 42px;
+	margin: 15px 0;
+	background-color: #ffcc99;
+}
+
+.ind-con-nav {
+	height: 70px;
+	background-color: #ffcc99;
+}
+
+.ind-con-house {
+	margin: 20px 0 25px 0;
+}
+.ind-con-house-new1 {
+	height: 35px;
+	background-color: #ffcc99;
+}
+.ind-con-house-img {
+	height: 90px;
+	background-color: #66cc66;
+}
+.ind-con-house-new2 {
+	height: 35px;
+	background-color: #ffcc99;
+}
+
+.ind-con1-left {
+	width: 240px;
+	height: 810px;
+	background-color: #ffcc99;
+	float: left;
+}
+.ind-con1-center {
+	width: 360px;
+	height: 810px;
+	margin: 0 20px;
+	background-color: #ffcc99;
+	float: left;
+}
+.ind-con1-right {
+	width: 360px;
+	height: 810px;
+	background-color: #ffcc99;
+	float: left;
+}
+
+.ind-con2 {
+	margin: 20px 0 27px 0;
+	float: left;
+}
+.ind-con2-left {
+	width: 240px;
+	height: 415px;
+	background-color: #ffcc99;
+	float: left;
+}
+.ind-con2-center {
+	width: 360px;
+	height: 415px;
+	margin: 0 20px;
+	background-color: #ffcc99;
+	float: left;
+}
+.ind-con2-right {
+	width: 360px;
+	height: 415px;
+	background-color: #ffcc99;
+	float: left;
+}
+
+.ind-con3-img {
+	width: 1000px;
+	height: 90px;
+	background-color: #ffcc99; 
+}
+
+.ind-con4 {
+	width: 1000px;
+	height: 65px;
+	background-color: #cc00cc;
+}
+
+.ind-con5 {
+	margin: 25px 0 16px 0;
+	float: left;
+}	
+.ind-con5-left {
+	width: 240px;
+	height: 395px;
+	background-color: #ffcc99;
+	float: left;	
+}
+.ind-con5-center {
+	width: 360px;
+	height: 395px;
+	margin: 0 20px;
+	background-color: #ffcc99;
+	float: left;
+}
+.ind-con5-right {
+	width: 360px;
+	height: 395px;
+	background-color: #ffcc99;
+	float: left;	
+}
+
+.ind-con6-nav { 
+	width: 1000px;
+	height: 35px;
+	margin-bottom: 20px;
+	background-color: #ffcc99;
+	float: left;
+}
+.ind-con6-tab1 {
+	width: 1000px;
+	height: 163px;
+	margin-bottom: 20px;
+	background-color: #ffcc99;
+	float: left;	
+}
